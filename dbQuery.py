@@ -1,7 +1,7 @@
 import ibm_db
 
 #qa3
-#conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.122.107.243;PORT=50000;PROTOCOL=TCPIP;UID=db2inst1;PWD=db2inst1;", "", "")
+conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.122.107.243;PORT=50000;PROTOCOL=TCPIP;UID=db2inst1;PWD=db2inst1;", "", "")
 #prodqa
 #conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.108.240.66;PORT=50000;PROTOCOL=TCPIP;UID=tlsystem;PWD=B!rd33B!rd;", "", "")
 #wdc
@@ -9,7 +9,7 @@ import ibm_db
 #dal
 #conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.142.234.144;PORT=50000;PROTOCOL=TCPIP;UID=tlsystem;PWD=B!rd33B!rd;", "", "")
 #SYD
-conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.138.55.105;PORT=50000;PROTOCOL=TCPIP;UID=tlsystem;PWD=B!rd33B!rd;", "", "")
+#conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.138.55.105;PORT=50000;PROTOCOL=TCPIP;UID=tlsystem;PWD=B!rd33B!rd;", "", "")
 #FRA
 #conn = ibm_db.connect("DATABASE=TLSAAS;HOSTNAME=10.134.194.133;PORT=50000;PROTOCOL=TCPIP;UID=tlsystem;PWD=B!rd33B!rd;", "", "")
 #sqlorgs = "select schemaname from syscat.schemata where schemaname like 'ORG%'"

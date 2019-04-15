@@ -1,0 +1,3880 @@
+[{
+  "props": {
+    "type": "taxes"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "fields": [{
+        "metadata": {
+          "key": true,
+          "maxlength": 20
+        },
+        "type": "string",
+        "name": "productKey",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        },
+        "type": "string",
+        "name": "nodeKey",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "string",
+        "name": "nodeTypeFlag",
+        "nullable": false
+      }, {
+        "metadata": {
+
+        },
+        "type": "double",
+        "name": "vatRate",
+        "nullable": false
+      }, {
+        "metadata": {
+
+        },
+        "type": "double",
+        "name": "egmFactor",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "effectiveDate",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "effectiveTime",
+        "nullable": false
+      }],
+      "type": "struct"
+    }
+  }
+}, {
+  "props": {
+    "type": "inventory"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "maxlength": 20
+        }
+      }, {
+        "name": "nodeKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        }
+      }, {
+        "name": "nodeTypeFlag",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveDate",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveTime",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "onShelfAtStore",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "inBackroomAtStore",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }],
+      "type": "struct"
+    }
+  }
+}, {
+  "props": {
+    "type": "MAPPrices",
+    "name": "preprocess"
+  },
+  "config": {
+    "version": 2,
+    "type": "shell",
+    "command": ["pypy"],
+    "script": ["import sys, os", "for line in sys.stdin:", "    pk,n,nt,mapPrice = line.split('|')", "    date = os.environ['RESOURCE_PATH'].replace('-','').split('/')[-1][:8]", "    time = '0'", "    print>>sys.stdout, '|'.join([pk,n,nt,mapPrice.rstrip(),date,time])"]
+  }
+}, {
+  "props": {
+    "type": "MAPPrices"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "fields": [{
+        "metadata": {
+          "key": true,
+          "maxlength": 20
+        },
+        "type": "string",
+        "name": "productKey",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        },
+        "type": "string",
+        "name": "nodeKey",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "string",
+        "name": "nodeTypeFlag",
+        "nullable": false
+      }, {
+        "metadata": {
+
+        },
+        "type": "double",
+        "name": "mapPrice",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "effectiveDate",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "effectiveTime",
+        "nullable": false
+      }],
+      "type": "struct"
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "name": "model"
+  },
+  "config": {
+    "is_out_of_sample": true,
+    "cmp_feature_list": [],
+    "model-version": 2,
+    "feature_list": ["ft_act_price", "ft_is_holiday", "ft_weekend_time_period"],
+    "constrained_regression": true
+  }
+}, {
+  "props": {
+    "type": "da",
+    "table": "cart_item_purchase"
+  },
+  "config": {
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "TIMESTAMP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true,
+          "format": "yyyyMMdd HH:mm:ss",
+          "change-format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }, {
+        "name": "PRODUCT_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PRODUCT_NAME",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_TOP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_BOTTOM",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BASE_PRICE",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "QUANTITY",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ORDER_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SITE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Delivery_Mode",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Avg_Rating",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Total_Review_Count",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Brand_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Product_Avaliability",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Promo_Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shipping_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_8",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_9",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "B2B/B2C",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_11",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Effort_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Discount_Total",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_14",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "list_source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SSC_list_grade",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Location_",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_PID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_URL",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shop_21",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Mobile_site_or_mainsite",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Location_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Cart_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Order_Status",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_28",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_29",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_30",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_31",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_32",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_33",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_34",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_35",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_36",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_37",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_38",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_39",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_40",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_41",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_42",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_43",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_44",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_45",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_46",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_47",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_48",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_49",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_50",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "table": "cart_item_purchase_back"
+  },
+  "config": {
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "TIMESTAMP",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true,
+          "format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }, {
+        "name": "PRODUCT_ID",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PRODUCT_NAME",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_TOP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_BOTTOM",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BASE_PRICE",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "QUANTITY",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ORDER_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SITE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Delivery_Mode",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Avg_Rating",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Total_Review_Count",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Brand_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Product_Avaliability",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Promo_Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Shipping_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_8",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_9",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "B2B/B2C",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_11",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Effort_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Discount_Total",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_14",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "list_source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SSC_list_grade",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Location_",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_PID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_URL",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shop_21",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Mobile_site_or_mainsite",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Location_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Cart_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Order_Status",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_28",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_29",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_30",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_31",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_32",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_33",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_34",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_35",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_36",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_37",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_38",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_39",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_40",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_41",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_42",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_43",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_44",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_45",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_46",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_47",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_48",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_49",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PURCHASE_ATTRIBUTE_50",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "ctx": "modeling"
+  },
+  "config": {
+    "model_split": "00:00,08:00,17:00,24:00",
+    "pyFiles": "/opt/ibm/NimbusModeling/pkg/dancing_parrot.egg,/opt/ibm/NimbusModeling/pkg/disco_panda.egg",
+    "pythonFile": "/opt/ibm/NimbusModeling/bin/DynamicPricingETL.py",
+    "ctx-modeling": 2,
+    "scheduleMode": "share",
+    "time_split": "00:00,08:00,10:00,12:00,14:00,17:00,24:00"
+  }
+}, {
+  "props": {
+    "type": "da"
+  },
+  "config": {
+    "format": "CSV",
+    "timeField": "TIMESTAMP",
+    "serverTimeZone": "GMT-5",
+    "dateField": "TIMESTAMP"
+  }
+}, {
+  "props": {
+    "type": "da",
+    "name": "preprocess_back"
+  },
+  "config": {
+    "type": "shell",
+    "command": ["python", "filter.py", "../inbox/SEED/products.csv", "../inbox/SEED/products_web.csv"]
+  }
+}, {
+  "props": {
+    "type": "sales",
+    "name": "dups"
+  },
+  "config": {
+    "dups": 1
+  }
+}, {
+  "props": {
+    "type": "families"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "lineFamily",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "sizeFamily",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "sizeClass",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "brandFamily",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "brandClass",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "otherFamily1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "otherClass1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "otherFamily2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "otherClass2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "table": "product_view"
+  },
+  "config": {
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "TIMESTAMP",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true,
+          "format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }, {
+        "name": "PRODUCT_NAME",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_ID",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PAGE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_TOP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_BOTTOM",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SITE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Avg_Star_Rating",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Number_of_Reviews",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Brand",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Available_Quantity",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_5",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_6",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_7",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_8",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_9",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Effort_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Site_Promotion_Tag",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Availability_of_Gallery_Images",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Discontinued_Item",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_14",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_15",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Tea_Leaf_JSessionID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Location_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Base_Price",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shown_Price",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_22",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_23",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_24",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_25",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_26",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_27",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_28",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_29",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_30",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_31",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_32",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_33",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_34",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_35",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_36",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_37",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_38",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_39",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_40",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_41",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_42",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_43",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_44",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_45",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_46",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_47",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_48",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_49",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_VIEW_ATTRIBUTE_50",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "table": "cart_item_abandonment"
+  },
+  "config": {
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "TIMESTAMP",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true,
+          "format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }, {
+        "name": "PRODUCT_ID",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PRODUCT_NAME",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_TOP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_BOTTOM",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BASE_PRICE",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "QUANTITY",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ORDER_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SITE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Delivery_Mode",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Avg_Rating",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Total_Review_Count",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Brand_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Product_Avaliability",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Promo_Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Shipping_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_8",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_9",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "B2B/B2C",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_11",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Effort_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Discount_Total",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_14",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "list_source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SSC_list_grade",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Location_",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_PID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_URL",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shop_21",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Mobile_site_or_mainsite",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Location_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Cart_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Order_Status",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_28",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_29",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_30",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_31",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_32",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_33",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_34",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_35",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_36",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_37",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_38",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_39",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_40",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_41",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_42",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_43",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_44",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_45",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_46",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_47",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_48",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_49",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ABANDONMENT_ATTRIBUTE_50",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "da",
+    "table": "cart_item_addition"
+  },
+  "config": {
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "TIMESTAMP",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true,
+          "format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }, {
+        "name": "PRODUCT_ID",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "PRODUCT_NAME",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_TOP",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "PRODUCT_CATEGORY_BOTTOM",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BASE_PRICE",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "QUANTITY",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "ORDER_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SITE_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Delivery_Mode",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Avg_Rating",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Total_Review_Count",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Brand_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Product_Avaliability",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Promo_Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "Shipping_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_8",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_9",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "B2B/B2C",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_11",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Effort_Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Discount_Total",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "required": true
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_14",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "list_source",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SSC_list_grade",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Location_",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_PID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ATC_Referral_URL",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Shop_21",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Style_Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Mobile_site_or_mainsite",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Location_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Cart_ID",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Order_Status",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_28",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_29",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_30",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_31",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_32",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_33",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_34",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_35",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_36",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_37",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_38",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_39",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_40",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_41",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_42",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_43",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_44",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_45",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_46",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_47",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_48",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_49",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CART_ATTRIBUTE_50",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "sales"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "fields": [{
+        "metadata": {
+          "regex": "^[+]*\\d*[1-9]\\d*$"
+        },
+        "type": "integer",
+        "name": "sequenceNum",
+        "nullable": false
+      }, {
+        "type": "string",
+        "name": "registerId",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        },
+        "type": "string",
+        "name": "locationKey",
+        "nullable": false
+      }, {
+        "type": "string",
+        "name": "transactionId",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "transactionDate",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true
+        },
+        "type": "integer",
+        "name": "transactionTime",
+        "nullable": false
+      }, {
+        "metadata": {
+          "regex": "(^SALE$|^DISC$|^GCFR$|^RETN$|^EXCH$|^BSGS$|^TEND$)"
+        },
+        "type": "string",
+        "name": "scanType",
+        "nullable": false
+      }, {
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        },
+        "type": "string",
+        "name": "itemKey",
+        "nullable": false
+      }, {
+        "metadata": {
+          "regex": "^(?=.*[0-9])[+-]*((\\d{0,5})(\\.\\d{0,4})?)$"
+        },
+        "type": "double",
+        "name": "quantity",
+        "nullable": false
+      }, {
+        "metadata": {
+          "regex": "(^EA$|^WT$)"
+        },
+        "type": "string",
+        "name": "scanUOM",
+        "nullable": false
+      }, {
+        "type": "double",
+        "name": "totalScanPrice",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "type": "double",
+        "name": "unitRegularPrice",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "referenceId",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "double",
+        "name": "unitListCost",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "customerNumber",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "originalTransactionId",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "packageId",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "reserved1",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "double",
+        "name": "vatAmt",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "reserved2",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "type": "string",
+        "name": "userFields",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }],
+      "type": "struct"
+    }
+  }
+}, {
+  "props": {
+    "type": "attributes"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "type": "string",
+        "name": "productKey",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "maxlength": 20
+        }
+      }, {
+        "type": "string",
+        "name": "nodeKey",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "maxlength": 50
+        }
+      }, {
+        "type": "string",
+        "name": "nodeTypeFlag",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "regex": "[0|1]"
+        }
+      }, {
+        "name": "SKUZoneAttribute0",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }, {
+        "name": "SKUZoneAttribute1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }, {
+        "name": "SKUZoneAttribute2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }, {
+        "name": "SKUZoneAttribute3",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }, {
+        "name": "SKUZoneAttribute4",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }, {
+        "name": "SKUZoneAttribute5",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+          "maxlength": 255
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "daGeography"
+  },
+  "config": {
+    "delimiter": ",",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "IP_ADDRESS",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CITY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "STATE",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COUNTRY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "DMA",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SECOND_LEVEL_DOMAIN",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "datz"
+  },
+  "config": {
+    "delimiter": ",",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "SESSION_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "COOKIE_ID",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "IP_ADDRESS",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CITY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "STATE",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "COUNTRY",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "DMA",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SECOND_LEVEL_DOMAIN",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "priceZones"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "zoneKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "zoneName",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "division",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "locationKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "prices"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeTypeFlag",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "unitRetailPrice",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+          "minBoundExclusive": 0
+        }
+      }, {
+        "name": "unitRetailPriceMultiple",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "isUserLocked",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "effectiveDate",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveTime",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "competitorsPrices"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeTypeFlag",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "competitorKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveDate",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveTime",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "unitPrice",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+          "minBoundExclusive": 0
+        }
+      }, {
+        "name": "unitPriceMultiple",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "standardCost",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "expediatedCost",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "inventoryFlag",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    },
+    "dateField": "effectiveDate"
+  }
+}, {
+  "props": {
+    "type": "products"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "IdentifierType",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "productName",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CustomerItemReference",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Description",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "LineGroup",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CustomerStatus",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SizeFamily",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SizeClass",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Manufacturer",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "UnitofMeasure",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "VolumeofMeasure",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "MultiPack",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CasePack",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "IsPrePriced",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Seasonal",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Brand",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "isPrivateLabel",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BrandClass",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "BrandFamily",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute0Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute0Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute1Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute1Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute2Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute2Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute3Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute3Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute4Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute4Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute5Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute5Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute6Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute6Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute7Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute7Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute8Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute8Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute9Type",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "Attribute9Value",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier1Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier1Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier2Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier2Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier3Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier3Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier4Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier4Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier5Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier5Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier6Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier6Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier7Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier7Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier8Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier8Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier9Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier9Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier10Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier10Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier11Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier11Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier12Code",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "ProdHier12Descr",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "SalvageValuePCT",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "EGMFactor",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "EQCFactor",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "MatureItemIdentifier",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "LinkType",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "HierarchyNodeKey",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "OtherClass1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "OtherClass2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "OtherFamily1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "OtherFamily2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "CustomerUPCKey",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "simpleEquivalentUnits",
+        "type": "double",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "locations"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "locationKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "locationName",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "openDate",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "closeDate",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "addressLine1",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "addressLine2",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "city",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "county",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "state",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "zipCode",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "country",
+        "type": "string",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }, {
+        "name": "division",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "costs"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeTypeFlag",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "unitCost",
+        "type": "double",
+        "nullable": false,
+        "metadata": {
+          "minBoundExclusive": 0
+        }
+      }, {
+        "name": "effectiveDate",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "effectiveTime",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }]
+    }
+  }
+}, {
+  "props": {
+    "type": "statuses"
+  },
+  "config": {
+    "format": "CSV",
+    "schema": {
+      "type": "struct",
+      "fields": [{
+        "name": "productKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true,
+          "maxlength": 100
+        }
+      }, {
+        "name": "nodeKey",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "nodeTypeFlag",
+        "type": "string",
+        "nullable": false,
+        "metadata": {
+          "key": true
+        }
+      }, {
+        "name": "status",
+        "type": "integer",
+        "nullable": false,
+        "metadata": {
+
+        }
+      }, {
+        "name": "isLocked",
+        "type": "integer",
+        "nullable": true,
+        "metadata": {
+
+        }
+      }]
+    }
+  }
+}]

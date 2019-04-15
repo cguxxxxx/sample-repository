@@ -1,0 +1,3 @@
+FRRDI6trE5NE+5YdsgcntU35z5wGNl7LLq+Hmy/AST5tBkv+4L4aTBKIix+v44Q7TMpAFEr3QtD47M/birq5tA==
+
+DefaultEndpointsProtocol=https;AccountName=adftrialch;AccountKey=FRRDI6trE5NE+5YdsgcntU35z5wGNl7LLq+Hmy/AST5tBkv+4L4aTBKIix+v44Q7TMpAFEr3QtD47M/birq5tA==;EndpointSuffix=core.windows.net

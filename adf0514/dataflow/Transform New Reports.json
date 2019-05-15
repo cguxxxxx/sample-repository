@@ -1,0 +1,38 @@
+{
+	"name": "Transform New Reports",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "NewCrimesFile",
+					"script": "source(output(\n\t\tarrest as string,\n\t\tbeat as string,\n\t\tblock as string,\n\t\tcase_number as string,\n\t\tcommunity_area as string,\n\t\tdate as string,\n\t\tdescription as string,\n\t\tdistrict as string,\n\t\tdomestic as string,\n\t\tfbi_code as string,\n\t\tid as string,\n\t\tiucr as string,\n\t\tlatitude as string,\n\t\tlocation_description as string,\n\t\tlongitude as string,\n\t\tprimary_type as string,\n\t\tupdated_on as string,\n\t\tward as string,\n\t\tx_coordinate as string,\n\t\ty_coordinate as string,\n\t\tyear as string,\n\t\t{location.latitude} as string,\n\t\t{location.longitude} as string,\n\t\t{location.human_address} as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tpurgeFiles: true) ~> NewCrimesFile"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Crimes_NewTable",
+						"type": "DatasetReference"
+					},
+					"name": "NewCrimesTable",
+					"script": "LocationColumn sink(input(\n\t\tID as string,\n\t\t{Case Number} as string,\n\t\tDate as string,\n\t\tBlock as string,\n\t\tIUCR as string,\n\t\t{Primary Type} as string,\n\t\tDescription as string,\n\t\t{Location Description} as string,\n\t\tArrest as string,\n\t\tDomestic as string,\n\t\tBeat as string,\n\t\tDistrict as string,\n\t\tWard as string,\n\t\t{Community Area} as string,\n\t\t{FBI Code} as string,\n\t\t{X Coordinate} as string,\n\t\t{Y Coordinate} as string,\n\t\tYear as string,\n\t\t{Updated On} as string,\n\t\tLatitude as string,\n\t\tLongitude as string,\n\t\tLocation as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tID = id,\n\t\t{Case Number} = case_number,\n\t\tDate = date,\n\t\tBlock = block,\n\t\tIUCR = iucr,\n\t\t{Primary Type} = primary_type,\n\t\tDescription = description,\n\t\t{Location Description} = location_description,\n\t\tArrest = arrest,\n\t\tDomestic = domestic,\n\t\tBeat = beat,\n\t\tDistrict = district,\n\t\tWard = ward,\n\t\t{Community Area} = community_area,\n\t\t{FBI Code} = fbi_code,\n\t\t{X Coordinate} = x_coordinate,\n\t\t{Y Coordinate} = y_coordinate,\n\t\tYear = year,\n\t\t{Updated On} = updated_on,\n\t\tLatitude = latitude,\n\t\tLongitude = longitude,\n\t\tLocation = location\n\t)) ~> NewCrimesTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RemoveColumns",
+					"script": "NewCrimesFile select(mapColumn(\n\t\tarrest,\n\t\tbeat,\n\t\tblock,\n\t\tcase_number,\n\t\tcommunity_area,\n\t\tdate,\n\t\tdescription,\n\t\tdistrict,\n\t\tdomestic,\n\t\tfbi_code,\n\t\tid,\n\t\tiucr,\n\t\tlatitude,\n\t\tlocation_description,\n\t\tlongitude,\n\t\tprimary_type,\n\t\tupdated_on,\n\t\tward,\n\t\tx_coordinate,\n\t\ty_coordinate,\n\t\tyear\n\t))~> RemoveColumns"
+				},
+				{
+					"name": "LocationColumn",
+					"script": "RemoveColumns derive(location = concat('(',latitude,',',longitude,')')) ~> LocationColumn"
+				}
+			]
+		}
+	}
+}

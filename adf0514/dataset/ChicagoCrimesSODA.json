@@ -1,0 +1,28 @@
+{
+	"name": "ChicagoCrimesSODA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "cityofchicago",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"LastDate": {
+				"type": "string",
+				"defaultValue": "01/01/2001"
+			}
+		},
+		"type": "HttpFile",
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects"
+			},
+			"relativeUrl": {
+				"value": "@concat('?$limit=1000&$order=date&$where=date>''',dataset().LastDate,'''')",
+				"type": "Expression"
+			},
+			"requestMethod": "GET"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

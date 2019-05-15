@@ -1,0 +1,126 @@
+{
+	"name": "updateCrimesFact",
+	"properties": {
+		"activities": [
+			{
+				"name": "getLastUpdateDate",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select max(date) as MaxDate From ChicagoCrimes"
+					},
+					"dataset": {
+						"referenceName": "CrimesFact",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set LastDate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getLastUpdateDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"typeProperties": {
+					"variableName": "LastDate",
+					"value": {
+						"value": "@activity('getLastUpdateDate').output.firstRow.MaxDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GetLatestReport",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set LastDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "HttpSource",
+						"httpRequestTimeout": "00:01:40"
+					},
+					"sink": {
+						"type": "BlobSink"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ChicagoCrimesSODA",
+						"type": "DatasetReference",
+						"parameters": {
+							"LastDate": {
+								"value": "@variables('LastDate')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CrimesFileSink",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Transform New Reports",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "GetLatestReport",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Transform New Reports",
+						"type": "DataFlowReference"
+					}
+				}
+			}
+		],
+		"variables": {
+			"LastDate": {
+				"type": "String",
+				"defaultValue": "01/01/2001"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

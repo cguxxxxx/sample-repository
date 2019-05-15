@@ -1,0 +1,120 @@
+{
+	"name": "CrimesFact",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ChicagoCrimes",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Case Number",
+				"type": "varchar"
+			},
+			{
+				"name": "Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Block",
+				"type": "varchar"
+			},
+			{
+				"name": "IUCR",
+				"type": "varchar"
+			},
+			{
+				"name": "Primary Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Location Description",
+				"type": "varchar"
+			},
+			{
+				"name": "Arrest",
+				"type": "varchar"
+			},
+			{
+				"name": "Domestic",
+				"type": "varchar"
+			},
+			{
+				"name": "Beat",
+				"type": "varchar"
+			},
+			{
+				"name": "District",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Ward",
+				"type": "varchar"
+			},
+			{
+				"name": "Community Area",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FBI Code",
+				"type": "varchar"
+			},
+			{
+				"name": "X Coordinate",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Y Coordinate",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Updated On",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Latitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Longitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Location",
+				"type": "varchar"
+			},
+			{
+				"name": "DateOnly",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[ChicagoCrimes]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

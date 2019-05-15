@@ -1,0 +1,25 @@
+{
+	"name": "CrimesFileSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"quoteChar": "\"",
+				"nullValue": "\\n",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "NewCrimeReport.csv",
+			"folderPath": "blob0514"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

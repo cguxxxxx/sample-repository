@@ -1,0 +1,11 @@
+{
+	"name": "Crimes_NewTable",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=trial0514.database.windows.net;initial catalog=dbtrial0514;user id=guch",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkFERjA1MTRfMDFiOTQzYmItZTRiNC00OWIwLWE4YWUtZjk2YTJhNjAzN2MxIg0KfQ=="
+		}
+	}
+}

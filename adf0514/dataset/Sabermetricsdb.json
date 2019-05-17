@@ -1,0 +1,15 @@
+{
+	"name": "Sabermetricsdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "saber.rawAgg"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf0514"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase2_connectionString": {
+			"value": ""
+		},
+		"ChicagoCrimes_connectionString": {
+			"value": ""
+		},
+		"Crimes_NewTable_connectionString": {
+			"value": ""
+		},
+		"AzureSqlAdventureWorksLT2017_connectionString": {
+			"value": ""
+		},
+		"AzureSqlAdventureWorksDW2017_connectionString": {
+			"value": ""
+		},
+		"CrimesFileSink_properties_typeProperties_fileName": {
+			"value": "NewCrimeReport.csv"
+		},
+		"CrimesFileSink_properties_typeProperties_folderPath": {
+			"value": "blob0514"
+		},
+		"cityofchicago_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

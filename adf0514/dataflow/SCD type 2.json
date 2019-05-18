@@ -1,0 +1,62 @@
+{
+	"name": "SCD type 2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlAdventureWorksLT",
+						"type": "DatasetReference"
+					},
+					"name": "SalesLTProduct",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbNailPhoto as binary,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table') ~> SalesLTProduct"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlAdventureWorksDW",
+						"type": "DatasetReference"
+					},
+					"name": "dboDimProduct",
+					"script": "source(output(\n\t\tProductKey as integer,\n\t\tProductAlternateKey as string,\n\t\tProductSubcategoryKey as integer,\n\t\tWeightUnitMeasureCode as string,\n\t\tSizeUnitMeasureCode as string,\n\t\tEnglishProductName as string,\n\t\tSpanishProductName as string,\n\t\tFrenchProductName as string,\n\t\tStandardCost as decimal(19,4),\n\t\tFinishedGoodsFlag as boolean,\n\t\tColor as string,\n\t\tSafetyStockLevel as integer,\n\t\tReorderPoint as integer,\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tSizeRange as string,\n\t\tWeight as double,\n\t\tDaysToManufacture as integer,\n\t\tProductLine as string,\n\t\tDealerPrice as decimal(19,4),\n\t\tClass as string,\n\t\tStyle as string,\n\t\tModelName as string,\n\t\tLargePhoto as binary,\n\t\tEnglishDescription as string,\n\t\tFrenchDescription as string,\n\t\tChineseDescription as string,\n\t\tArabicDescription as string,\n\t\tHebrewDescription as string,\n\t\tThaiDescription as string,\n\t\tGermanDescription as string,\n\t\tJapaneseDescription as string,\n\t\tTurkishDescription as string,\n\t\tStartDate as timestamp,\n\t\tEndDate as timestamp,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table') ~> dboDimProduct"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlAdventureWorksDW",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "setattribute sink(input(\n\t\tProductKey as integer,\n\t\tProductAlternateKey as string,\n\t\tProductSubcategoryKey as integer,\n\t\tWeightUnitMeasureCode as string,\n\t\tSizeUnitMeasureCode as string,\n\t\tEnglishProductName as string,\n\t\tSpanishProductName as string,\n\t\tFrenchProductName as string,\n\t\tStandardCost as decimal(19,4),\n\t\tFinishedGoodsFlag as boolean,\n\t\tColor as string,\n\t\tSafetyStockLevel as integer,\n\t\tReorderPoint as integer,\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tSizeRange as string,\n\t\tWeight as double,\n\t\tDaysToManufacture as integer,\n\t\tProductLine as string,\n\t\tDealerPrice as decimal(19,4),\n\t\tClass as string,\n\t\tStyle as string,\n\t\tModelName as string,\n\t\tLargePhoto as binary,\n\t\tEnglishDescription as string,\n\t\tFrenchDescription as string,\n\t\tChineseDescription as string,\n\t\tArabicDescription as string,\n\t\tHebrewDescription as string,\n\t\tThaiDescription as string,\n\t\tGermanDescription as string,\n\t\tJapaneseDescription as string,\n\t\tTurkishDescription as string,\n\t\tStartDate as timestamp,\n\t\tEndDate as timestamp,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Filter1",
+					"script": "dboDimProduct filter(isNull(EndDate)) ~> Filter1"
+				},
+				{
+					"name": "Join1",
+					"script": "SalesLTProduct, Filter1 join(ProductID == ProductKey,\n\tjoinType:'left',\n\tbroadcast: 'none')~> Join1"
+				},
+				{
+					"name": "Select1",
+					"script": "Join1 select(mapColumn(\n\t\tProductID,\n\t\tName,\n\t\tProductNumber,\n\t\tListPrice = SalesLTProduct@ListPrice,\n\t\tSize = SalesLTProduct@Size,\n\t\tWeight = SalesLTProduct@Weight,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tSellStartDate,\n\t\tSellEndDate,\n\t\tDiscontinuedDate,\n\t\tThumbNailPhoto,\n\t\tThumbnailPhotoFileName,\n\t\trowguid,\n\t\tModifiedDate,\n\t\tProductKey,\n\t\tProductAlternateKey,\n\t\tProductSubcategoryKey,\n\t\tWeightUnitMeasureCode,\n\t\tSizeUnitMeasureCode,\n\t\tEnglishProductName,\n\t\tSpanishProductName,\n\t\tFrenchProductName,\n\t\tStandardCost = dboDimProduct@StandardCost,\n\t\tFinishedGoodsFlag,\n\t\tColor = dboDimProduct@Color,\n\t\tSafetyStockLevel,\n\t\tReorderPoint,\n\t\tSizeRange,\n\t\tDaysToManufacture,\n\t\tProductLine,\n\t\tDealerPrice,\n\t\tClass,\n\t\tStyle,\n\t\tModelName,\n\t\tLargePhoto,\n\t\tEnglishDescription,\n\t\tFrenchDescription,\n\t\tChineseDescription,\n\t\tArabicDescription,\n\t\tHebrewDescription,\n\t\tThaiDescription,\n\t\tGermanDescription,\n\t\tJapaneseDescription,\n\t\tTurkishDescription,\n\t\tStartDate,\n\t\tEndDate,\n\t\tStatus\n\t))~> Select1"
+				},
+				{
+					"name": "ConditionalSplit1",
+					"script": "Select1 split(isNull(ProductAlternateKey),\n\tdisjoint: true) ~> ConditionalSplit1@(new row, )"
+				},
+				{
+					"name": "setattribute",
+					"script": "SurrogateKey1 derive(ProductAlternateKey = concat(‘abcd’,toString(ProductAlternateKey)),\n\t\tStatus = 'Y',\n\t\tStartDate = currentDate()) ~> setattribute"
+				},
+				{
+					"name": "SurrogateKey1",
+					"script": "ConditionalSplit1@new row keyGenerate(output(ProductAlternateKey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+				}
+			]
+		}
+	}
+}

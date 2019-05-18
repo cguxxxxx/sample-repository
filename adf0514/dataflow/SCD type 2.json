@@ -46,7 +46,7 @@
 				},
 				{
 					"name": "ConditionalSplit1",
-					"script": "Select1 split(isNull(ProductAlternateKey),\n\tdisjoint: true) ~> ConditionalSplit1@(new row, )"
+					"script": "Select1 split(isNull(ProductAlternateKey),\n\tdisjoint: true) ~> ConditionalSplit1@(new row)"
 				},
 				{
 					"name": "setattribute",

@@ -50,7 +50,7 @@
 				},
 				{
 					"name": "setattribute",
-					"script": "SurrogateKey1 derive(ProductAlternateKey = concat(‘abcd’,toString(ProductAlternateKey)),\n\t\tStatus = 'Y',\n\t\tStartDate = currentDate()) ~> setattribute"
+					"script": "SurrogateKey1 derive(ProductAlternateKey = concat('abcd',toString(ProductAlternateKey)),\n\t\tStatus = 'Y',\n\t\tStartDate = currentDate()) ~> setattribute"
 				},
 				{
 					"name": "SurrogateKey1",
